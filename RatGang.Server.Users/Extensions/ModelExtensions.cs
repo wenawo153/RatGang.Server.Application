@@ -11,11 +11,11 @@ public static class ModelExtensions
         return new()
         {
             Birthday = new DateTime(user.UserDetails.Birthday),
-            Email = user.UserInformation.Email,
+            Email = user.Email,
             FirstName = user.UserDetails.FirstName,
             LastName = user.UserDetails.LastName,
             Patronymic = user.UserDetails.Patronymic,
-            UserName = user.UserInformation.UserName,
+            UserName = user.UserName,
         };
     }
 

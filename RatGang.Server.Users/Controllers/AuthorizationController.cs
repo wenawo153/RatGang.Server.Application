@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RatGang.Server.Authentication.Extensions;
 using RatGang.Server.Users.Database.Entety;
+using RatGang.Server.Users.Entety.Request;
 using RatGang.Server.Users.Entety.Request.AuthRequests;
 using RatGang.Server.Users.Extensions;
 using RatGang.Server.Users.Services;
@@ -15,24 +16,6 @@ public class AuthorizationController(
     IVerifyService verifyService,
     IAuthenticationService authenticationService) : Controller
 {
-    [HttpPut("Email/Add")]
-    public async Task<IActionResult> AddEmailAuthMethod(
-        [FromQuery] Guid userId,
-        [FromBody] EmailAuthRequest options)
-    {
-        try
-        {
-            var user = await userService.GetAsync(
-                options.Email, [UserComponents.UserAuthMethods]);
-
-            await authenticationService.AddEmailAuthMethodAsync(user, options);
-            await verifyService.SendVerityEmail(options.Email);
-
-            return Ok($"verify mail sended to {options.Email}");
-        }
-        catch (NullReferenceException ex) { return NotFound(ex.Message); }
-    }
-
     [HttpGet("Email")]
     public async Task<IActionResult> AuthFromEmail(
         [FromQuery] EmailAuthRequest options)
@@ -43,6 +26,16 @@ public class AuthorizationController(
             return Ok($"verify mail sended to {options.Email}");
         }
         return BadRequest("auth_error");
+    }
+
+    [HttpPost("Email")]
+    public async Task<IActionResult> RegistrationFromEmail(
+        [FromBody] CreateUserRequest options)
+    {
+        await userService.CreateAsync(options);
+        await verifyService.SendVerityEmail(options.Email);
+
+        return Ok($"verify mail sended to {options.Email}");
     }
 
     [HttpGet("Email/Verify")]

@@ -11,14 +11,12 @@ public class UserService(GeneralContext db) : IUserService
 {
     public async Task<User> CreateAsync(CreateUserRequest options)
     {
-        if (!await IsLegacyEmail(options.Email))
-            throw new Exception("email_is_avalaible");
-
         var user = new User()
         {
-            AuthMethods = new()
+            AuthData = new()
             {
-                EmailAuthMethod = new()
+                EmailConfirmation = false,
+                PasswordHash = options.Password.HashedPassword()
             },
             UserDetails = new()
             {
@@ -27,12 +25,9 @@ public class UserService(GeneralContext db) : IUserService
                 Patronymic = options.Patronymic,
                 Birthday = options.Birthday,
             },
-            UserInformation = new()
-            {
-                Role = options.Role,
-                Email = options.Email,
-                UserName = options.UserName,
-            }
+            Email = options.Email,
+            Role = options.Role,
+            UserName = options.UserName,
         };
         await db.Users.AddAsync(user);
         await db.SaveChangesAsync();
@@ -43,12 +38,11 @@ public class UserService(GeneralContext db) : IUserService
     public async Task<User> EditAsync(EditUserRequest options)
     {
         var user = await db.Users
-            .Include(_ => _.UserInformation)
             .Include(_ => _.UserDetails)
             .FirstOrDefaultAsync() ?? throw new NullReferenceException("user_is_not_found");
 
-        if (options.Email != null) user.UserInformation.Email = options.Email;
-        if (options.UserName != null) user.UserInformation.UserName = options.UserName;
+        if (options.UserName != null) user.UserName = options.UserName;
+        if (options.Email != null) user.Email = options.Email;
 
         if (options.FirstName != null) user.UserDetails.FirstName = options.FirstName;
         if (options.LastName != null) user.UserDetails.LastName = options.LastName;
@@ -61,41 +55,21 @@ public class UserService(GeneralContext db) : IUserService
         return user;
     }
 
-    public async Task<User> GetAsync(Guid id, UserComponents[] components)
+    public async Task<User> GetAsync(Guid id)
     {
         return await db.Users
             .AsNoTracking()
-            .IncludingUser(components)
+            .Include(_ => _.UserDetails)
             .FirstOrDefaultAsync(_ => _.Id == id)
             ?? throw new NullReferenceException("user_not_found");
     }
 
-    public async Task<User> GetAsync(string email, UserComponents[] components)
+    public async Task<User> GetAsync(string email)
     {
         return await db.Users
             .AsNoTracking()
-            .IncludingUser(components)
-            .Include(_ => _.UserInformation)
-            .FirstOrDefaultAsync(_ => _.UserInformation.Email == email)
+            .Include(_ => _.UserDetails)
+            .FirstOrDefaultAsync(_ => _.Email == email)
             ?? throw new NullReferenceException("user_not_found");
-    }
-
-    public async Task<User> GetFromEmailAuthAsync(string email, UserComponents[] components)
-    {
-        return await db.EmailAuthMethods
-            .Include(_ => _.UserAuthMethods)
-                .ThenInclude(_ => _.User)
-            .Where(_ => _.Email == email)
-            .Select(_ => _.UserAuthMethods.User)
-            .IncludingUser(components)
-            .FirstOrDefaultAsync() ?? throw new NullReferenceException("user_not_found");
-    }
-
-    private async Task<bool> IsLegacyEmail(string email)
-    {
-        if (await db.UserInformation.AnyAsync(_ => _.Email == email)
-            || await db.EmailAuthMethods.AnyAsync(_ => _.Email == email))
-            return false;
-        return true;
     }
 }

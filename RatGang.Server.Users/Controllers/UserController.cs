@@ -27,8 +27,7 @@ public class UserController(
         var userId = TokenExtensions.GetUserId(
             User.Claims);
 
-        var user = await userService.GetAsync(
-            userId, [UserComponents.UserInform, UserComponents.UserDetails]);
+        var user = await userService.GetAsync(userId);
 
         return Ok(user.ToResponce());
     }

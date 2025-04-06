@@ -30,17 +30,14 @@ public class VerifyService(
             throw new NullReferenceException("not_avalaible_verify_code");
         if (verifyCode == code) throw new ArgumentException("invalid_code");
 
-        var user = await db.EmailAuthMethods
-            .Include(_ => _.UserAuthMethods)
-                .ThenInclude(_ => _.User)
-            .Where(_ => _.Email == email)
-            .Select(_ => _.UserAuthMethods.User)
-            .IncludingUser([UserComponents.UserInform, UserComponents.UserDetails])
-            .FirstOrDefaultAsync() ?? throw new NullReferenceException("user_not_found");
+        var user = await db.Users
+            .Include(_ => _.UserDetails)
+            .FirstOrDefaultAsync(_ => _.Email == email) 
+            ?? throw new NullReferenceException("user_not_found");
 
-        if (user.AuthMethods.EmailAuthMethod.EmailConfirmation == false)
+        if (user.AuthData.EmailConfirmation == false)
         {
-            user.AuthMethods.EmailAuthMethod.EmailConfirmation = true;
+            user.AuthData.EmailConfirmation = true;
             db.Users.Update(user);
             await db.SaveChangesAsync();
         }
