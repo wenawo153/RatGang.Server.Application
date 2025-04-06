@@ -39,7 +39,6 @@ public class AuthorizationController(
     }
 
     [HttpGet("Email/Verify")]
-    [Authorize("Access")]
     public async Task<IActionResult> ConfirmationAuthFromEmail(
         [FromQuery] string email,
         [FromQuery] string code)
