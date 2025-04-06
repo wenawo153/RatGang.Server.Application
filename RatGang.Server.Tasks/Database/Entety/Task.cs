@@ -6,9 +6,12 @@ public class Task
     public Guid UserId { get; set; }
 
     public string Name { get; set; } = string.Empty;
-    
+    public string Description { get; set; } = string.Empty;
+
     public long DateCreate { get; set; } = 0;
     public long PlanDate { get; set; } = 0;
+
+    public string Content { get; set; } = string.Empty;
 
     public TaskStatus Status { get; set; }
     public TaskPrioritys TaskPriority { get; set; }

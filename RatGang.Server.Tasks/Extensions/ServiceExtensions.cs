@@ -24,6 +24,7 @@ namespace RatGang.Server.Tasks.Extensions
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Configurate.Singleton, Newtonsoft.Json.Formatting.Indented));
             Console.WriteLine("--------------------");
 
+            services.Minio();
             services.Database();
 
             return services;
@@ -44,6 +45,7 @@ namespace RatGang.Server.Tasks.Extensions
                 .WithCredentials(
                     Configurate.Singleton.MinioOptions.AccessKey,
                     Configurate.Singleton.MinioOptions.SecretKey)
+                .WithSSL(false)
                 .Build());
         }
 

@@ -12,7 +12,6 @@ namespace RatGang.Server.Tasks.Database
 
         public GeneralContext(DbContextOptions<GeneralContext> options) : base(options)
         {
-            Database.MigrateAsync();
             Database.EnsureCreated();
         }
     }
