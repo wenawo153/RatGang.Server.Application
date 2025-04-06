@@ -12,7 +12,6 @@ namespace RatGang.Server.Users.Database
 
         public GeneralContext(DbContextOptions<GeneralContext> options) : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
     }
