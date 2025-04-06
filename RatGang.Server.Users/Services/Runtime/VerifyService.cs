@@ -28,7 +28,7 @@ public class VerifyService(
     {
         if (!memoryCache.TryGetValue(email, out string? verifyCode))
             throw new NullReferenceException("not_avalaible_verify_code");
-        if (verifyCode == code) throw new ArgumentException("invalid_code");
+        if (verifyCode != code) throw new ArgumentException("invalid_code");
 
         var user = await db.Users
             .Include(_ => _.UserDetails)
