@@ -47,9 +47,12 @@ public class AuthorizationController(
         {
             User user = await verifyService.VerificationEmail(email, code);
 
-            var tokens = TokenExtensions.GetTokensPair(
-                User.Claims.GetTokensRequest());
-            
+            var tokens = TokenExtensions.GetTokensPair(new()
+            {
+                Role = user.Role,
+                UserId = user.Id,
+            });
+
             return Ok(user.ToLoginResponce(tokens));
         }
         catch (NullReferenceException ex) { return NotFound(ex.Message); }
