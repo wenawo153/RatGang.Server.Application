@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RatGang.Server.Tasks.Services;
 
-namespace RatGang.Server.Tasks.Services
+public interface ITaskService
 {
-    internal interface ITaskService
-    {
-    }
 }
