@@ -25,13 +25,14 @@ public class VerifyService(
     }
 
     public async Task<User> VerificationEmail(string email, string code)
-    {
+        {
         if (!memoryCache.TryGetValue(email, out string? verifyCode))
             throw new NullReferenceException("not_avalaible_verify_code");
         if (verifyCode != code) throw new ArgumentException("invalid_code");
 
         var user = await db.Users
             .Include(_ => _.UserDetails)
+            .Include(_ => _.AuthData)
             .FirstOrDefaultAsync(_ => _.Email == email) 
             ?? throw new NullReferenceException("user_not_found");
 
