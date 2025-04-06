@@ -16,8 +16,8 @@ public class UserController(
     public async Task<IActionResult> CreateUser(
         [FromBody] CreateUserRequest options)
     {
-        await userService.CreateAsync(options);
-        return Ok("user_created");
+        var user = await userService.CreateAsync(options);
+        return Ok(user.Id);
     }
 
     [HttpGet]
