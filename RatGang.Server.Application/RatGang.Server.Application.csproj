@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RatGang.Server.Authentication\RatGang.Server.Authentication.csproj" />
     <ProjectReference Include="..\RatGang.Server.Tasks\RatGang.Server.Tasks.csproj" />
     <ProjectReference Include="..\RatGang.Server.Users\RatGang.Server.Users.csproj" />

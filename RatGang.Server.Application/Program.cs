@@ -29,6 +29,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 app.MapControllers();
 app.UseCors("CorsPolicy");
+app.UseStaticFiles();
 
 app.UseSwaggerUIMicroservices();
 
