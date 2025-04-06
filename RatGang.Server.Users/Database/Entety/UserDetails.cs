@@ -9,7 +9,5 @@ public class UserDetails
     public string LastName { get; set; } = string.Empty;
     public string Patronymic { get; set; } = string.Empty;
 
-    public long Birthday { get; set; } = 0;
-
     public User User { get; set; } = default!;
 }

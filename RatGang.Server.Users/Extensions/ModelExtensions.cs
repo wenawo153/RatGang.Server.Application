@@ -10,7 +10,6 @@ public static class ModelExtensions
     {
         return new()
         {
-            Birthday = new DateTime(user.UserDetails.Birthday),
             Email = user.Email,
             FirstName = user.UserDetails.FirstName,
             LastName = user.UserDetails.LastName,

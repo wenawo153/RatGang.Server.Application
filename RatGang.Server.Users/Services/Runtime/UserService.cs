@@ -23,7 +23,6 @@ public class UserService(GeneralContext db) : IUserService
                 FirstName = options.FirstName,
                 LastName = options.LastName,
                 Patronymic = options.Patronymic,
-                Birthday = options.Birthday.Ticks,
             },
             Email = options.Email,
             Role = options.Role,
@@ -47,7 +46,6 @@ public class UserService(GeneralContext db) : IUserService
         if (options.FirstName != null) user.UserDetails.FirstName = options.FirstName;
         if (options.LastName != null) user.UserDetails.LastName = options.LastName;
         if (options.Patronymic != null) user.UserDetails.Patronymic = options.Patronymic;
-        if (options.Birthday != null) user.UserDetails.Birthday = (long)options.Birthday;
 
         db.Users.Update(user);
         await db.SaveChangesAsync();
