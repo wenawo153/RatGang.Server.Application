@@ -20,6 +20,7 @@ public class AuthorizationController(
     public async Task<IActionResult> AuthFromEmail(
         [FromQuery] EmailAuthRequest options)
     {
+        options.Email = options.Email.ToLower();
         if (await authenticationService.AuthWithEmailAsync(options))
         {
             await verifyService.SendVerityEmail(options.Email);
@@ -32,6 +33,7 @@ public class AuthorizationController(
     public async Task<IActionResult> RegistrationFromEmail(
         [FromBody] CreateUserRequest options)
     {
+        options.Email = options.Email.ToLower();
         await userService.CreateAsync(options);
         await verifyService.SendVerityEmail(options.Email);
 
@@ -43,6 +45,7 @@ public class AuthorizationController(
         [FromQuery] string email,
         [FromQuery] string code)
     {
+        email = email.ToLower();
         try
         {
             User user = await verifyService.VerificationEmail(email, code);

@@ -12,14 +12,6 @@ namespace RatGang.Server.Users.Controllers;
 public class UserController(
     IUserService userService) : Controller
 {
-    [HttpPost]
-    public async Task<IActionResult> CreateUser(
-        [FromBody] CreateUserRequest options)
-    {
-        var user = await userService.CreateAsync(options);
-        return Ok(user.Id);
-    }
-
     [HttpGet]
     [Authorize("Access")]
     public async Task<IActionResult> GetUser()

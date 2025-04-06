@@ -14,7 +14,7 @@ public class CreateUserRequest
     public string LastName { get; set; } = string.Empty;
     public string Patronymic { get; set; } = string.Empty;
 
-    public long Birthday { get; set; } = 0;
+    public DateTime Birthday { get; set; }
 
     public string Role { get; set; } = string.Empty;
 }

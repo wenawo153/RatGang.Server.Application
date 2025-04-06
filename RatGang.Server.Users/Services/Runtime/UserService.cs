@@ -23,7 +23,7 @@ public class UserService(GeneralContext db) : IUserService
                 FirstName = options.FirstName,
                 LastName = options.LastName,
                 Patronymic = options.Patronymic,
-                Birthday = options.Birthday,
+                Birthday = options.Birthday.Ticks,
             },
             Email = options.Email,
             Role = options.Role,
