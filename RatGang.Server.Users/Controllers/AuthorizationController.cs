@@ -16,11 +16,13 @@ public class AuthorizationController(
     IAuthenticationService authenticationService) : Controller
 {
     [HttpPut("Email/Add")]
-    public async Task<IActionResult> AddEmailAuthMethod(Guid userId, EmailAuthRequest options)
+    public async Task<IActionResult> AddEmailAuthMethod(
+        [FromBody] EmailAuthRequest options)
     {
         try
         {
-            var user = await userService.GetAsync(userId, [UserComponents.UserAuthMethods]);
+            var user = await userService.GetFromEmailAuthAsync(
+                options.Email, [UserComponents.UserAuthMethods]);
 
             await authenticationService.AddEmailAuthMethodAsync(user, options);
             await verifyService.SendVerityEmail(options.Email);

@@ -10,6 +10,7 @@ public interface IUserService
 
     public Task<User> GetAsync(Guid id, UserComponents[] components);
     public Task<User> GetAsync(string email, UserComponents[] components);
+    public Task<User> GetFromEmailAuthAsync(string email, UserComponents[] components);
 
     public Task<User> EditAsync(EditUserRequest options);
 }
